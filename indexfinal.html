@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Management</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #00aaff, #ff7f00);
+            color: #333;
+            animation: backgroundAnimation 10s ease infinite;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background: linear-gradient(135deg, #00aaff, #ff7f00); }
+            50% { background: linear-gradient(135deg, #ff7f00, #00aaff); }
+            100% { background: linear-gradient(135deg, #00aaff, #ff7f00); }
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            background: #d4ed15;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-10px);
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h {
+            text-align: center;
+            font-family: 'Lobster', cursive;
+            color: #000000;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        h3 {
+            color: #007bff;
+        }
+
+        h2 {
+            color: #d42c80;
+            font-size: 1.98rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        form label {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        form input, form select, form button {
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        form input:focus, form select:focus, form button:focus {
+            outline: none;
+            border-color: #ff7f00;
+        }
+
+        form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        form button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            animation: tableAnimation 2s ease-out;
+        }
+
+        @keyframes tableAnimation {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #de1a8d;
+        }
+
+        table tbody tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        #downloadPDFBtn {
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #downloadPDFBtn:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4a41e9;
+            color: rgb(17, 245, 59);
+            font-size: 1rem;
+            margin-top: 30px;
+        }
+
+        footer a {
+            color: #d7f116c9;
+            text-decoration: dotted;
+            font-weight: solid;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden-form {
+            display: none;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Lobster&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <center>
+            <img src="GOVT-LOGO-300x225-1 (1).jpeg.jpg" height="270" width="270" alt="College Logo">
+            <h1>Attendance Management System</h1>
+            <h1>𝙶𝙾𝚅𝙴𝚁𝙽𝙼𝙴𝙽𝚃 𝙰𝚁𝚃𝚂 𝙰𝙽𝙳 𝚂𝙲𝙸𝙴𝙽𝙲𝙴 𝙲𝙾𝙻𝙻𝙴𝙶𝙴, 𝚃𝙸𝚁𝚄𝙿𝙰𝚃𝚃𝚄𝚁</h1>
+            <h3>Sign In</h3>
+            <!-- Sign-In Form -->
+            <form id="signinForm">
+                <label for="signinUsername">Username:</label>
+                <input type="text" id="signinUsername" placeholder="Enter Username" required>
+                <label for="signinPassword">Password:</label>
+                <input type="password" id="signinPassword" placeholder="Enter Password" required>
+                <button type="submit">Sign In <span class="emoji">🔑</span></button>
+            </form>
+            <p>Don't have an account? <a href="#" id="showSignUp">Sign Up</a></p>
+            
+            <!-- Sign-Up Form (Initially hidden) -->
+            <form id="signupForm" class="hidden-form">
+                <h2>Sign Up</h2>
+                <label for="signupUsername">Username:</label>
+                <input type="text" id="signupUsername" placeholder="Enter Username" required>
+                <label for="signupPassword">Password:</label>
+                <input type="password" id="signupPassword" placeholder="Enter Password" required>
+                <button type="submit">Sign Up <span class="emoji">📝</span></button>
+            </form>
+        </center>
+
+        <!-- Attendance Section (Initially hidden) -->
+        <div id="attendanceSection" class="hidden-form">
+            <h2>Attendance Records</h2>
+            <form id="attendanceForm">
+                <label for="studentName">Student Name:</label>
+                <input type="text" id="studentName" placeholder="Enter Name" required>
+                <label for="department">Department:</label>
+                <select id="department" required>
+                    <option value="Tamil">Tamil B.sc(Tamil)</option>
+                    <option value="English">English B.sc(English)</option>
+                    <option value="Computer Application">Computer Application (BCA)</option>
+                    <option value="Computer Science">Computer Science B.sc(computer science)</option>
+                    <option value="Mathematics">Mathematics B.sc(Mathematics)</option>
+                    <option value="Physics">Physics B.SC(Physics)</option>
+                    <option value="Chemistry">Chemistry B.Sc(Chemistry)</option>
+                    <option value="Commerce">Commerce B.com</option>
+                    <option value="Commerce Computer Application">Commerce Computer Application B.COM (CA)</option>
+                    <option value="Business Administration">Business Administration BBA</option>
+                </select>
+    
+                <label for="year">Year:</label>
+                <select id="year" required>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                </select>
+                
+                <label for="attendanceStatus">Attendance:</label>
+                <select id="attendanceStatus" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+                
+                <button type="submit" class="attendance-btn">Mark Attendance for Period 1 <span class="emoji">✅</span></button>
+            </form>
+            
+            <h3>Period Attendance</h3>
+            <form id="attendancePeriodsForm">
+                <label for="periodAttendanceStatus1">Period 1 Status:</label>
+                <select id="periodAttendanceStatus1" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+                
+                <label for="periodAttendanceStatus2">Period 2 Status:</label>
+                <select id="periodAttendanceStatus2" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+                
+                <label for="periodAttendanceStatus3">Period 3 Status:</label>
+                <select id="periodAttendanceStatus3" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+                
+                <label for="periodAttendanceStatus4">Period 4 Status:</label>
+                <select id="periodAttendanceStatus4" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+                
+                <label for="periodAttendanceStatus5">Period 5 Status:</label>
+                <select id="periodAttendanceStatus5" required>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+
+                <button type="submit" class="attendance-btn">Mark Attendance for 5 Periods <span class="emoji">✅</span></button>
+            </form>
+
+            <table id="attendanceTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Department</th>
+                        <th>Status (1)</th>
+                        <th>Status (2)</th>
+                        <th>Status (3)</th>
+                        <th>Status (4)</th>
+                        <th>Status (5)</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic rows will be added here -->
+                </tbody>
+            </table>
+            <button id="downloadPDFBtn">Download as PDF 📄</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Development by <a href="https://rithishgraphics.neocities.org/rithish%20graphics/rithish%20graphics">Rithish Graphics</a> &copy; 2025. All rights reserved. | <a href="https://policies.google.com/privacy?hl=en-US">Privacy Policy</a> <br>
+        <img src="Youtube.pn.png"> </center> <br><a href="https://www.youtube.com/@TechSyntaxofficial">SUBSCRIBE MY YOUTUBE</a></p>
+        
+        <p>📞Contact: +91 63811 97003
+        <br> ✉ Email: Rithishsekar421@gmail.com
+        <br>
+        🌐: Rithish Graphics  <a href="https://rithishgraphics.neocities.org/rithish%20graphics/rithish%20graphics">Website</a>
+        </p>  
+    </footer>
+
+    <!-- Include jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        // Handle Sign-In functionality
+        document.getElementById("signinForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            const username = document.getElementById("signinUsername").value.trim();
+            const password = document.getElementById("signinPassword").value.trim();
+
+            const savedUsername = localStorage.getItem("username");
+            const savedPassword = localStorage.getItem("password");
+
+            if (username === savedUsername && password === savedPassword) {
+                alert("Sign-In Successful!");
+                document.getElementById("signinForm").classList.add("hidden-form");
+                document.getElementById("attendanceSection").classList.remove("hidden-form");
+            } else {
+                alert("Invalid credentials. Please try again.");
+            }
+        });
+
+        // Handle Sign-Up functionality
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            const username = document.getElementById("signupUsername").value.trim();
+            const password = document.getElementById("signupPassword").value.trim();
+
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+
+            alert("Sign-Up Successful! You can now sign in.");
+            document.getElementById("signupForm").reset();
+            document.getElementById("signupForm").classList.add("hidden-form");
+            document.getElementById("signinForm").classList.remove("hidden-form");
+        });
+
+        // Show Sign-Up form when "Sign Up" is clicked
+        document.getElementById("showSignUp").addEventListener("click", function() {
+            document.getElementById("signinForm").classList.add("hidden-form");
+            document.getElementById("signupForm").classList.remove("hidden-form");
+        });
+
+        // Handle Attendance Marking for single entry
+        document.getElementById("attendanceForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            const studentName = document.getElementById("studentName").value.trim();
+            const department = document.getElementById("department").value;
+            const attendanceStatus = document.getElementById("attendanceStatus").value;
+            const attendanceTable = document.getElementById("attendanceTable").getElementsByTagName("tbody")[0];
+
+            if (studentName === "") {
+                alert("Please enter the student's name.");
+                return;
+            }
+
+            const newRow = attendanceTable.insertRow();
+            const cellNumber = newRow.insertCell(0);
+            const cellName = newRow.insertCell(1);
+            const cellDepartment = newRow.insertCell(2);
+            const cellStatus1 = newRow.insertCell(3);
+            const cellDate = newRow.insertCell(4);
+
+            cellNumber.textContent = attendanceTable.rows.length;
+            cellName.textContent = studentName;
+            cellDepartment.textContent = department;
+            cellStatus1.textContent = attendanceStatus;
+            cellDate.textContent = new Date().toLocaleDateString();
+
+            document.getElementById("attendanceForm").reset();
+        });
+
+        // Handle Attendance Marking for multiple periods
+        document.getElementById("attendancePeriodsForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            const studentName = document.getElementById("studentName").value.trim();
+            const department = document.getElementById("department").value;
+
+            if (studentName === "") {
+                alert("Please enter the student's name.");
+                return;
+            }
+
+            const attendanceTable = document.getElementById("attendanceTable").getElementsByTagName("tbody")[0];
+            const newRow = attendanceTable.insertRow();
+            const cellNumber = newRow.insertCell(0);
+            const cellName = newRow.insertCell(1);
+            const cellDepartment = newRow.insertCell(2);
+            const cellStatus1 = newRow.insertCell(3);
+            const cellStatus2 = newRow.insertCell(4);
+            const cellStatus3 = newRow.insertCell(5);
+            const cellStatus4 = newRow.insertCell(6);
+            const cellStatus5 = newRow.insertCell(7);
+            const cellDate = newRow.insertCell(8);
+
+            cellNumber.textContent = attendanceTable.rows.length;
+            cellName.textContent = studentName;
+            cellDepartment.textContent = department;
+            cellStatus1.textContent = document.getElementById("periodAttendanceStatus1").value;
+            cellStatus2.textContent = document.getElementById("periodAttendanceStatus2").value;
+            cellStatus3.textContent = document.getElementById("periodAttendanceStatus3").value;
+            cellStatus4.textContent = document.getElementById("periodAttendanceStatus4").value;
+            cellStatus5.textContent = document.getElementById("periodAttendanceStatus5").value;
+            cellDate.textContent = new Date().toLocaleDateString();
+
+            document.getElementById("attendancePeriodsForm").reset();
+        });
+
+        // Generate PDF of Attendance Records
+        document.getElementById("downloadPDFBtn").addEventListener("click", function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(18);
+            doc.text("Attendance Records", 14, 10);
+
+            const table = document.getElementById("attendanceTable");
+            const rows = [];
+
+            for (let i = 1; i < table.rows.length; i++) {
+                let row = table.rows[i];
+                rows.push([
+                    row.cells[0].textContent,
+                    row.cells[1].textContent,
+                    row.cells[2].textContent,
+                    row.cells[3].textContent,
+                    row.cells[4].textContent,
+                    row.cells[5].textContent,
+                    row.cells[6].textContent,
+                    row.cells[7].textContent,
+                    row.cells[8].textContent
+                ]);
+            }
+
+            doc.autoTable({
+                head: [['#', 'Student Name', 'Department', 'Status (1)', 'Status (2)', 'Status (3)', 'Status (4)', 'Status (5)', 'Date']],
+                body: rows,
+                startY: 20,
+                theme: 'grid'
+            });
+
+            doc.save('attendance_records.pdf');
+        });
+    </script>
+</body>
+</html>
